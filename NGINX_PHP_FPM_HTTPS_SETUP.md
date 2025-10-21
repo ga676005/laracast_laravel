@@ -28,10 +28,11 @@ sudo nano /etc/php/8.4/fpm/pool.d/www.conf
 
 **IMPORTANT**: Change these lines:
 ```ini
-user = www-data
-group = www-data
-listen.owner = www-data
-listen.group = www-data
+user = gohomewho
+group = gohomewho
+listen = 127.0.0.1:9250
+listen.owner = gohomewho
+listen.group = gohomewho
 ```
 
 ### 2.2 Start and Enable PHP-FPM
@@ -48,6 +49,32 @@ sudo usermod -a -G gohomewho www-data
 ```
 
 ### 3.2 Set Proper Ownership and Permissions
+
+**CRITICAL**: Ensure www-data can traverse the directory path to your files:
+
+```bash
+# Make sure www-data can access the path to your files
+sudo chmod 755 /home/gohomewho/
+sudo chmod 755 /home/gohomewho/code/
+```
+
+**Option A: Group Ownership (Recommended for Production)**
+```bash
+# Set ownership to your user with www-data group
+sudo chown -R gohomewho:www-data /home/gohomewho/laracast_laravel
+
+# Make directories readable by group
+sudo chmod -R 755 /home/gohomewho/laracast_laravel
+
+# Make storage and cache writable by group (Laravel needs this)
+sudo chmod -R 775 /home/gohomewho/laracast_laravel/storage
+sudo chmod -R 775 /home/gohomewho/laracast_laravel/bootstrap/cache
+
+# Set group sticky bit so new files inherit the group
+sudo chmod g+s /home/gohomewho/laracast_laravel
+```
+
+**Option B: Add www-data to Your Group**
 ```bash
 # Set ownership to your user
 sudo chown -R gohomewho:gohomewho /home/gohomewho/laracast_laravel
@@ -224,6 +251,19 @@ You should see:
 **Permission Denied Errors:**
 - Ensure www-data is in your user group: `groups www-data`
 - Check file ownership: `ls -la /home/gohomewho/laracast_laravel/public`
+- **CRITICAL**: Ensure www-data can traverse the directory path:
+  ```bash
+  # Test if www-data can access each level of the path
+  sudo -u www-data ls /home/gohomewho/
+  sudo -u www-data ls /home/gohomewho/code/
+  sudo -u www-data ls /home/gohomewho/code/laracast_laravel/
+  sudo -u www-data ls /home/gohomewho/code/laracast_laravel/public/
+  ```
+- Fix directory traversal permissions:
+  ```bash
+  sudo chmod 755 /home/gohomewho/
+  sudo chmod 755 /home/gohomewho/code/
+  ```
 
 **SSL Certificate Not Trusted:**
 - Ensure root CA is installed on Windows (not just WSL2)
@@ -258,10 +298,26 @@ openssl s_client -connect laracast_laravel.test:443
 ### 🔑 **Critical Success Factors:**
 
 1. **File Permissions**: www-data must be able to read your files
-2. **Certificate Type**: Use ECDSA certificates (`mkcert -ecdsa`)
-3. **File Extension**: Rename `.pem` to `.crt` for Windows recognition
-4. **Root CA Installation**: Must be installed on Windows, not just WSL2
-5. **Browser Restart**: Always restart browser after certificate installation
+2. **Directory Traversal**: www-data must be able to traverse the path to your files
+3. **Certificate Type**: Use ECDSA certificates (`mkcert -ecdsa`)
+4. **File Extension**: Rename `.pem` to `.crt` for Windows recognition
+5. **Root CA Installation**: Must be installed on Windows, not just WSL2
+6. **Browser Restart**: Always restart browser after certificate installation
+
+### 📋 **Permission Strategy Comparison:**
+
+**Option A (Group Ownership) - Recommended for Production:**
+- Files owned by: `youruser:www-data`
+- Benefits: New files automatically inherit correct group
+- Use: Production environments, team development
+- Command: `sudo chown -R youruser:www-data /path/to/project`
+
+**Option B (User Group) - Simpler for Solo Development:**
+- Files owned by: `youruser:youruser`
+- www-data added to your group
+- Benefits: Simpler setup, works with existing file ownership
+- Use: Solo development, quick setup
+- Command: `sudo usermod -a -G youruser www-data`
 
 ### 📁 **Directory Structure:**
 ```
