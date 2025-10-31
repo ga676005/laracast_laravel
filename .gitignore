@@ -23,3 +23,6 @@ Homestead.json
 Homestead.yaml
 Thumbs.db
 wsl2-php-development
+_ide_helper.php
+.phpstorm.meta.php
+.phpstorm.meta.php/

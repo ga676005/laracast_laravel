@@ -12,8 +12,8 @@ status_laravel_dev_env
 user 不改了，改資料夾權限
 
 ## Make www-data the owner of Laravel directories
-sudo chown -R www-data:www-data /home/gohomewho/code/laracast_laravel/storage/ 
-sudo chown -R www-data:www-data /home/gohomewho/code/laracast_laravel/bootstrap/cache/ 
+sudo chown -R gohomewho /home/gohomewho/code/laracast_laravel/storage/ 
+sudo chown -R gohomewho /home/gohomewho/code/laracast_laravel/bootstrap/cache/ 
 
 ## Set proper permissions
 sudo chmod -R 775 /home/gohomewho/code/laracast_laravel/storage/ 
@@ -44,4 +44,11 @@ notepad C:\Windows\System32\drivers\etc\hosts
 把這裡的 nginx.conf 複製到 nginx 資料夾裡
 ```bash
 sudo cp ~/code/laracast_laravel/laravel_nginx.conf /etc/nginx/sites-enabled/laravel_nginx.conf
+```
+
+不確定幹嘛用的 ide-helper 
+https://github.com/barryvdh/laravel-ide-helper 
+```bash 
+php artisan ide-helper:generate
+php artisan ide-helper:models -RW
 ```
