@@ -13,7 +13,7 @@
 <body>
     <nav class="bg-gray-100 dark:bg-gray-800 p-4 shadow-sm">
         <div class="flex gap-6">
-            <x-nav-link href="/" overwrite="true" class="text-5xl text-white">Home</x-nav-link>
+            <x-nav-link href="/" overwriteClass class="text-red-200 text-3xl">Home</x-nav-link>
             <x-nav-link href="/about">About</x-nav-link>
             <x-nav-link href="/contact">Contact</x-nav-link>
         </div>
