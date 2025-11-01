@@ -8,22 +8,54 @@ nano ~/.bash_aliases
 restart_laravel_dev_env  
 status_laravel_dev_env  
 
+# nginx 
+```bash 
+sudo nano /etc/nginx/nginx.conf
+# user www-data;
+```
+
 # php-fpm
-user 不改了，改資料夾權限
+sudo nano /etc/php/8.4/fpm/pool.d/www.conf
+```ini
+; Unix user/group of processes
+user = gohomewho
+group = gohomewho
 
-## Make www-data the owner of Laravel directories
-sudo chown -R gohomewho /home/gohomewho/code/laracast_laravel/storage/ 
-sudo chown -R gohomewho /home/gohomewho/code/laracast_laravel/bootstrap/cache/ 
+; The address on which to accept FastCGI requests.
+listen = /run/php/php8.4-fpm.sock
 
-## Set proper permissions
-sudo chmod -R 775 /home/gohomewho/code/laracast_laravel/storage/ 
-sudo chmod -R 775 /home/gohomewho/code/laracast_laravel/bootstrap/cache/ 
+; Use ACL to grant access to multiple users
+listen.acl_users = gohomewho,www-data
+```
+
+```bash
+php-fpm8.4 -t
+
+# Chown entire project
+sudo chown -R gohomewho:gohomewho /home/gohomewho/code/laracast_laravel
+
+# Set writable permissions for Laravel directories
+sudo chmod -R 775 /home/gohomewho/code/laracast_laravel/storage
+sudo chmod -R 775 /home/gohomewho/code/laracast_laravel/bootstrap/cache
+
+# Ensure www-data can traverse to files
+sudo chmod 755 /home/gohomewho/
+sudo chmod 755 /home/gohomewho/code/
 
 sudo systemctl restart php8.4-fpm 
 ls -la /run/php/php8.4-fpm.sock 
 sudo nginx -t 
 sudo systemctl reload nginx 
 sudo systemctl restart nginx 
+```
+
+**Why this works:**
+- PHP-FPM runs as `gohomewho` → can access your files
+- Socket owned by `gohomewho` → stays with PHP-FPM user
+- ACL grants `www-data` access → Nginx can connect
+- Files owned by `gohomewho` → PHP-FPM can read/write
+- Clean and flexible → easy to add more users if needed
+
 
 # local ssl
 ```bash
@@ -52,3 +84,5 @@ https://github.com/barryvdh/laravel-ide-helper
 php artisan ide-helper:generate
 php artisan ide-helper:models -RW
 ```
+
+

@@ -1,3 +1,4 @@
 <x-layout title="About">
-    <h1>About</h1>
+    <x-slot:heading>About</x-slot:heading>
+    <p class="text-gray-600">Welcome! Learn more about us.</p>
 </x-layout>
