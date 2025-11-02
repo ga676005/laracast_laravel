@@ -20,11 +20,7 @@ Route::get('/jobs', function () {
 })->name('jobs.index');
 
 Route::get('/jobs/{id}', function (string $id) {
-    $job = Job::find((int) $id);
-
-    if (! $job) {
-        abort(404);
-    }
+    $job = Job::findOrFail((int) $id);
 
     return view('jobs.show', ['job' => $job]);
 })->name('jobs.show');

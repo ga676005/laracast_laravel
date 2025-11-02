@@ -6,7 +6,10 @@
             <h2 class="text-2xl font-bold text-gray-900">{{ $job['title'] }}</h2>
         </div>
         <div>
-            <p class="text-lg text-gray-600"><strong>Salary:</strong> {{ $job['salary'] }}</p>
+            <p class="text-lg text-gray-600">
+                <strong>Salary:</strong> 
+                ${{ number_format($job['salary']['USD']) }} (USD) / {{ number_format($job['salary']['TWD']) }} (TWD)
+            </p>
         </div>
         <div>
             <a href="{{ route('jobs.index') }}" class="text-indigo-600 hover:text-indigo-800">← Back to all jobs</a>

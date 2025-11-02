@@ -9,7 +9,9 @@
                         {{ $job['title'] }}
                     </a>
                 </h2>
-                <p class="text-gray-600">Salary: {{ $job['salary'] }}</p>
+                <p class="text-gray-600">
+                    Salary: ${{ number_format($job['salary']['USD']) }} (USD) / {{ number_format($job['salary']['TWD']) }} (TWD)
+                </p>
             </div>
         @endforeach
     </div>

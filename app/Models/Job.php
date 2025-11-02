@@ -2,34 +2,47 @@
 
 namespace App\Models;
 
-class Job
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+/**
+ * @property int $id
+ * @property string $title
+ * @property array{USD: string, TWD: string} $salary
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ */
+class Job extends Model
 {
+    /** @use HasFactory<\Database\Factories\JobFactory> */
+    use HasFactory;
+
     /**
-     * @var array<int, array{id: int, title: string, salary: string}>
+     * The table associated with the model.
+     *
+     * @var string
      */
-    protected static array $jobs = [
-        ['id' => 1, 'title' => 'Senior Software Engineer', 'salary' => '$120,000'],
-        ['id' => 2, 'title' => 'Frontend Developer', 'salary' => '$90,000'],
-        ['id' => 3, 'title' => 'Backend Developer', 'salary' => '$100,000'],
+    protected $table = 'job_listings';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var list<string>
+     */
+    protected $fillable = [
+        'title',
+        'salary',
     ];
 
     /**
-     * Get all jobs.
+     * Get the attributes that should be cast.
      *
-     * @return array<int, array{id: int, title: string, salary: string}>
+     * @return array<string, string>
      */
-    public static function all(): array
+    protected function casts(): array
     {
-        return self::$jobs;
-    }
-
-    /**
-     * Find a job by ID.
-     *
-     * @return array{id: int, title: string, salary: string}|null
-     */
-    public static function find(int $id): ?array
-    {
-        return collect(self::$jobs)->firstWhere('id', $id);
+        return [
+            'salary' => 'array',
+        ];
     }
 }
