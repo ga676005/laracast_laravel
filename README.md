@@ -14,6 +14,23 @@ sudo nano /etc/nginx/nginx.conf
 # user www-data;
 ```
 
+把這裡的 nginx.conf 複製到 nginx 資料夾裡
+```bash
+sudo cp ~/code/laracast_laravel/laravel_nginx.conf /etc/nginx/sites-enabled/laravel_nginx.conf
+```
+
+因為 root "/etc/nginx/code/laracast_laravel/public";
+所以要建 synlink
+```bash
+sudo mkdir -p /etc/nginx/code
+sudo ln -sf /home/gohomewho/code/laracast_laravel /etc/nginx/code/laracast_laravel
+ls -la /etc/nginx/code/
+sudo nginx -t
+sudo systemctl reload nginx
+```
+
+
+
 # php-fpm
 sudo nano /etc/php/8.4/fpm/pool.d/www.conf
 ```ini
@@ -73,10 +90,7 @@ sudo mv laracastlaravel.test-key.pem /etc/nginx/ssl/
 notepad C:\Windows\System32\drivers\etc\hosts
 ```
 
-把這裡的 nginx.conf 複製到 nginx 資料夾裡
-```bash
-sudo cp ~/code/laracast_laravel/laravel_nginx.conf /etc/nginx/sites-enabled/laravel_nginx.conf
-```
+
 
 不確定幹嘛用的 ide-helper 
 https://github.com/barryvdh/laravel-ide-helper 
@@ -86,3 +100,15 @@ php artisan ide-helper:models -RW
 ```
 
 
+在 wsl2 上跑指令看 ip，然後 windows 上就能用 dbeaver 開那個 db
+```bash
+ip addr show eth0
+```
+
+# windows <=> wsl2 移檔案
+```bash
+# 在 wsl2 執行
+mv /mnt/c/Users/gohomewho/Downloads/mvc.png /home/gohomewho/code/laracast_laravel/
+# 在 windows 執行
+wsl mv /mnt/c/Users/gohomewho/Downloads/mvc.png /home/gohomewho/code/laracast_laravel/
+```

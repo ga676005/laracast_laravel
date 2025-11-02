@@ -46,5 +46,5 @@ sudo service redis-server start 2>/dev/null || echo "ℹ️  Redis not installed
 sudo service memcached start 2>/dev/null || echo "ℹ️  Memcached not installed or already running"
 
 echo "✅ All services started! Your Laravel app is available at:"
-echo "   🌐 https://laracast_laravel.test"
-echo "   🔧 http://laracast_laravel.test (redirects to HTTPS)"
+echo "   🌐 https://laracastlaravel.test"
+echo "   🔧 http://laracastlaravel.test (redirects to HTTPS)"
