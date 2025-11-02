@@ -22,6 +22,7 @@
             <div class="hidden md:block">
               <div class="ml-10 flex items-baseline space-x-4">
                 <x-nav-link href="{{ route('home') }}" route="home">Home</x-nav-link>
+                <x-nav-link href="{{ route('jobs.index') }}" route="jobs.index">Jobs</x-nav-link>
                 <x-nav-link href="{{ route('about') }}" route="about">About</x-nav-link>
                 <x-nav-link href="{{ route('contact') }}" route="contact">Contact</x-nav-link>
               </div>
@@ -72,6 +73,7 @@
       <el-disclosure id="mobile-menu" hidden class="block md:hidden">
         <div class="space-y-1 px-2 pt-2 pb-3 sm:px-3">
           <x-nav-link href="{{ route('home') }}" route="home" class="block text-base">Home</x-nav-link>
+          <x-nav-link href="{{ route('jobs.index') }}" route="jobs.index" class="block text-base">Jobs</x-nav-link>
           <x-nav-link href="{{ route('about') }}" route="about" class="block text-base">About</x-nav-link>
           <x-nav-link href="{{ route('contact') }}" route="contact" class="block text-base">Contact</x-nav-link>
         </div>
