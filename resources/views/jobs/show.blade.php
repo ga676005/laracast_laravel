@@ -11,6 +11,16 @@
                 ${{ number_format($job['salary']['USD']) }} (USD) / {{ number_format($job['salary']['TWD']) }} (TWD)
             </p>
         </div>
+        @if ($job->employer)
+            <div>
+                <p class="text-lg text-gray-600">
+                    <strong>Employer:</strong> {{ $job->employer->name }}
+                    @if ($job->employer->company)
+                        at {{ $job->employer->company }}
+                    @endif
+                </p>
+            </div>
+        @endif
         <div>
             <a href="{{ route('jobs.index') }}" class="text-indigo-600 hover:text-indigo-800">← Back to all jobs</a>
         </div>

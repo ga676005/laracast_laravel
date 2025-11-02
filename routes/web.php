@@ -16,11 +16,23 @@ Route::get('/about', function () {
 })->name('about');
 
 Route::get('/jobs', function () {
-    return view('jobs.index', ['jobs' => Job::all()]);
+    // Eager loading with ->with('employer')->get():
+    // - Executes 2 queries: 1 for jobs + 1 for all employers (using WHERE id IN (...))
+    // - When the view accesses $job->employer, no additional queries are needed
+    //
+    // If using Job::all() instead:
+    // - Would execute 1 query for jobs + N queries (one per job when accessing $job->employer in the view)
+    // - This is the "N+1 query problem": 1 + N = 11 queries for 10 jobs (instead of just 2)
+    // - Each access to $job->employer->name triggers a separate database query
+    $jobs = Job::with('employer')->get();
+
+    return view('jobs.index', ['jobs' => $jobs]);
 })->name('jobs.index');
 
 Route::get('/jobs/{id}', function (string $id) {
-    $job = Job::findOrFail((int) $id);
+    // Eager loading: Loads the job and its employer in 2 queries
+    // findOrFail automatically returns 404 if job doesn't exist
+    $job = Job::with('employer')->findOrFail($id);
 
     return view('jobs.show', ['job' => $job]);
 })->name('jobs.show');

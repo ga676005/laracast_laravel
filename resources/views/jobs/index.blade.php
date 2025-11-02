@@ -12,6 +12,11 @@
                 <p class="text-gray-600">
                     Salary: ${{ number_format($job['salary']['USD']) }} (USD) / {{ number_format($job['salary']['TWD']) }} (TWD)
                 </p>
+                @if ($job->employer)
+                    <p class="text-sm text-gray-500">
+                        Employer: {{ $job->employer->name }} @ {{ $job->employer->company }}
+                    </p>
+                @endif
             </div>
         @endforeach
     </div>

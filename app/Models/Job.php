@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property int $id
@@ -30,9 +31,18 @@ class Job extends Model
      * @var list<string>
      */
     protected $fillable = [
+        'employer_id',
         'title',
         'salary',
     ];
+
+    /**
+     * Get the employer that owns the job listing.
+     */
+    public function employer(): BelongsTo
+    {
+        return $this->belongsTo(Employer::class);
+    }
 
     /**
      * Get the attributes that should be cast.
