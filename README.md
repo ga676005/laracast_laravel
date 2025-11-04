@@ -99,10 +99,23 @@ php artisan ide-helper:generate
 php artisan ide-helper:models -RW
 ```
 
-
-在 wsl2 上跑指令看 ip，然後 windows 上就能用 dbeaver 開那個 db
+# 從 windows 開 wsl2 的 db
+先試試看連不連得到 127.0.0.1:3306，windows 上的 3306 不能有跑自己的東西 
+不能再試下面的 
+在 wsl2 上跑指令看 ip，然後 windows 上就能用 dbeaver 開那個 db 
 ```bash
-ip addr show eth0
+sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
+改 bind-address = 0.0.0.0
+
+sudo service mysql restart
+
+mysql -u root -p
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'secret' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+EXIT;
+
+ip addr show eth0 
+# 或 127.0.0.1
 ```
 
 # windows <=> wsl2 移檔案
@@ -111,4 +124,16 @@ ip addr show eth0
 mv /mnt/c/Users/gohomewho/Downloads/mvc.png /home/gohomewho/code/laracast_laravel/
 # 在 windows 執行
 wsl mv /mnt/c/Users/gohomewho/Downloads/mvc.png /home/gohomewho/code/laracast_laravel/
+```
+
+# db seeder
+```bash
+# runs DatabaseSeeder
+php artisan db:seed
+# runs a specific seeder class
+php artisan db:seed --class=SeederClassName
+# drops all tables, re-runs migrations, then runs seeders
+php artisan migrate:fresh --seed 
+# rolls back migrations, re-runs them, then runs seeders
+php artisan migrate:refresh --seed 
 ```
