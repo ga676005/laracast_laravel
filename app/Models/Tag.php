@@ -4,11 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Employer extends Model
+class Tag extends Model
 {
-    /** @use HasFactory<\Database\Factories\EmployerFactory> */
+    /** @use HasFactory<\Database\Factories\TagFactory> */
     use HasFactory;
 
     /**
@@ -16,14 +15,14 @@ class Employer extends Model
      *
      * @var string
      */
-    protected $table = 'employers';
+    protected $table = 'tags';
 
     /**
      * The primary key for the model.
      *
      * @var string
      */
-    protected $primaryKey = 'employer_id';
+    protected $primaryKey = 'tag_id';
 
     /**
      * The attributes that are mass assignable.
@@ -32,14 +31,10 @@ class Employer extends Model
      */
     protected $fillable = [
         'name',
-        'company',
     ];
 
-    /**
-     * Get the job listings for the employer.
-     */
-    public function jobListings(): HasMany
+    public function jobs()
     {
-        return $this->hasMany(Job::class, 'employer_id', 'employer_id');
+        return $this->belongsToMany(Job::class, 'job_listings_to_tags', 'tag_id', 'job_listing_id', 'tag_id', 'job_listing_id');
     }
 }

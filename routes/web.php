@@ -24,7 +24,7 @@ Route::get('/jobs', function () {
     // - Would execute 1 query for jobs + N queries (one per job when accessing $job->employer in the view)
     // - This is the "N+1 query problem": 1 + N = 11 queries for 10 jobs (instead of just 2)
     // - Each access to $job->employer->name triggers a separate database query
-    $jobs = Job::with('employer')->get();
+    $jobs = Job::with('employer', 'tags')->get();
 
     return view('jobs.index', ['jobs' => $jobs]);
 })->name('jobs.index');
@@ -32,7 +32,7 @@ Route::get('/jobs', function () {
 Route::get('/jobs/{id}', function (string $id) {
     // Eager loading: Loads the job and its employer in 2 queries
     // findOrFail automatically returns 404 if job doesn't exist
-    $job = Job::with('employer')->findOrFail($id);
+    $job = Job::with('employer', 'tags')->findOrFail($id);
 
     return view('jobs.show', ['job' => $job]);
 })->name('jobs.show');

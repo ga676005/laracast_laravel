@@ -128,6 +128,8 @@ wsl mv /mnt/c/Users/gohomewho/Downloads/mvc.png /home/gohomewho/code/laracast_la
 
 # db seeder
 ```bash
+# drop all tables
+php artisan db:wipe
 # runs DatabaseSeeder
 php artisan db:seed
 # runs a specific seeder class

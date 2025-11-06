@@ -5,9 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
- * @property int $id
+ * @property int $job_listing_id
  * @property string $title
  * @property array{USD: string, TWD: string} $salary
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -26,6 +27,13 @@ class Job extends Model
     protected $table = 'job_listings';
 
     /**
+     * The primary key for the model.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'job_listing_id';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
@@ -41,7 +49,12 @@ class Job extends Model
      */
     public function employer(): BelongsTo
     {
-        return $this->belongsTo(Employer::class);
+        return $this->belongsTo(Employer::class, 'employer_id', 'employer_id');
+    }
+
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class, 'job_listings_to_tags', 'job_listing_id', 'tag_id', 'job_listing_id', 'tag_id');
     }
 
     /**
