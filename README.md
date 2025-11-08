@@ -139,3 +139,31 @@ php artisan migrate:fresh --seed
 # rolls back migrations, re-runs them, then runs seeders
 php artisan migrate:refresh --seed 
 ```
+
+# pagination 
+```php
+// Route/Controller
+$jobs = Job::paginate(10);  // 10 items per page
+$jobs2 = Job::simplePaginate(3); // 不會有總數
+$jobs3 = Job::cursorPaginate(3); // 不能用 ?page=2
+
+
+// Blade View
+{{ $jobs->links() }}  // Uses default from AppServiceProvider
+{{ $jobs->links('pagination::tailwind') }}  // Override per-paginator
+{{ $jobs->links('custom-pagination') }}  // Uses resources/views/custom-pagination.blade.php
+
+// AppServiceProvider
+Paginator::defaultView('pagination::tailwind');  // Set global default
+```
+
+如果要客製化
+```bash
+# 搜尋 pagination 然後 enter 
+php artisan vendor:publish
+# 或是
+php artisan vendor:publish --tag=laravel-pagination
+# 檔案會建在 resources/views/vendor/pagination/tailwind.blade.php
+# 複製一個到 resources/views/custom-pagination.blade.php
+# 之後 blade 就能用 {{ $jobs->links('custom-pagination') }}
+```

@@ -32,5 +32,10 @@
             </div>
         @endforeach
     </div>
+
+    <div class="mt-6">
+        {{ $jobs->links() }}
+        {{-- {{ $jobs->links('pagination::simple-tailwind') }} --}}
+    </div>
 </x-layout>
 
