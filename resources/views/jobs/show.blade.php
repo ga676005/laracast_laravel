@@ -1,6 +1,12 @@
 <x-layout title="{{ $job['title'] }}">
     <x-slot:heading>Job Details</x-slot:heading>
     
+    @if (session('success'))
+        <div class="mb-6 rounded-md bg-green-50 p-4">
+            <p class="text-sm font-medium text-green-800">{{ session('success') }}</p>
+        </div>
+    @endif
+    
     <div class="space-y-4">
         <div>
             <h2 class="text-2xl font-bold text-gray-900">{{ $job['title'] }}</h2>

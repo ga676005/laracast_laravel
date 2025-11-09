@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-gray-100">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full bg-gray-100">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -30,7 +30,27 @@
           </div>
           <div class="hidden md:block">
             <div class="ml-4 flex items-center md:ml-6">
-              <button type="button" class="relative rounded-full p-1 text-gray-400 hover:text-white focus:outline-2 focus:outline-offset-2 focus:outline-indigo-500">
+              <!-- Language Switcher Dropdown -->
+              <el-dropdown class="relative ml-3">
+                <button class="relative flex items-center rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
+                  <span class="sr-only">{{ __('messages.language.switch_language') }}</span>
+                  <span>{{ app()->getLocale() === 'en' ? __('messages.language.english') : __('messages.language.chinese') }}</span>
+                  <svg viewBox="0 0 16 16" fill="currentColor" data-slot="icon" aria-hidden="true" class="ml-1 size-4">
+                    <path d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
+                  </svg>
+                </button>
+
+                <el-menu anchor="bottom end" popover class="w-48 origin-top-right rounded-md bg-white py-1 shadow-lg outline-1 outline-black/5 transition transition-discrete [--anchor-gap:--spacing(2)] data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in">
+                  <a href="{{ route('locale.switch', 'en') }}" class="block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:outline-hidden {{ app()->getLocale() === 'en' ? 'bg-gray-50 font-medium' : '' }}">
+                    {{ __('messages.language.english') }}
+                  </a>
+                  <a href="{{ route('locale.switch', 'zh_TW') }}" class="block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:outline-hidden {{ app()->getLocale() === 'zh_TW' ? 'bg-gray-50 font-medium' : '' }}">
+                    {{ __('messages.language.chinese') }}
+                  </a>
+                </el-menu>
+              </el-dropdown>
+
+              <button type="button" class="relative ml-3 rounded-full p-1 text-gray-400 hover:text-white focus:outline-2 focus:outline-offset-2 focus:outline-indigo-500">
                 <span class="absolute -inset-1.5"></span>
                 <span class="sr-only">View notifications</span>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6">
@@ -76,6 +96,16 @@
           <x-nav-link href="{{ route('jobs.index') }}" route="jobs.index" class="block text-base">Jobs</x-nav-link>
           <x-nav-link href="{{ route('about') }}" route="about" class="block text-base">About</x-nav-link>
           <x-nav-link href="{{ route('contact') }}" route="contact" class="block text-base">Contact</x-nav-link>
+          <div class="border-t border-white/10 pt-2">
+            <div class="px-2 space-y-1">
+              <a href="{{ route('locale.switch', 'en') }}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-white/5 hover:text-white {{ app()->getLocale() === 'en' ? 'bg-white/5 text-white' : '' }}">
+                {{ __('messages.language.english') }}
+              </a>
+              <a href="{{ route('locale.switch', 'zh_TW') }}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-white/5 hover:text-white {{ app()->getLocale() === 'zh_TW' ? 'bg-white/5 text-white' : '' }}">
+                {{ __('messages.language.chinese') }}
+              </a>
+            </div>
+          </div>
         </div>
         <div class="border-t border-white/10 pt-4 pb-3">
           <div class="flex items-center px-5">
