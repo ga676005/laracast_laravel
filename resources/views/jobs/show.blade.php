@@ -43,8 +43,14 @@
                 </div>
             </div>
         @endif
-        <div>
+        <div class="flex items-center gap-4">
             <a href="{{ route('jobs.index') }}" class="text-indigo-600 hover:text-indigo-800">← Back to all jobs</a>
+            <a href="{{ route('jobs.edit', $job->job_listing_id) }}" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus:outline-indigo-600">Edit</a>
+            <form method="POST" action="{{ route('jobs.destroy', $job->job_listing_id) }}" onsubmit="return confirm('Are you sure you want to delete this job?');">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus:outline-red-600">Delete</button>
+            </form>
         </div>
     </div>
 </x-layout>

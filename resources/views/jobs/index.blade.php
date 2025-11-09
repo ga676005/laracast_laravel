@@ -1,6 +1,12 @@
 <x-layout title="Jobs">
     <x-slot:heading>Jobs</x-slot:heading>
     
+    @if (session('success'))
+        <div class="mb-6 rounded-md bg-green-50 p-4">
+            <p class="text-sm font-medium text-green-800">{{ session('success') }}</p>
+        </div>
+    @endif
+    
     <div class="mb-6 flex justify-end">
         <a href="{{ route('jobs.create') }}" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-indigo-500 dark:shadow-none dark:focus-visible:outline-indigo-500">
             Create Job
