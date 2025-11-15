@@ -24,9 +24,9 @@ class JobController extends Controller
     /**
      * Display the specified job.
      */
-    public function show(string $id): View
+    public function show(Job $job): View
     {
-        $job = Job::with('employer', 'tags')->findOrFail($id);
+        $job->load('employer', 'tags');
 
         return view('jobs.show', ['job' => $job]);
     }
@@ -60,16 +60,15 @@ class JobController extends Controller
             ],
         ]);
 
-        return redirect()->route('jobs.show', $job->job_listing_id)
+        return redirect()->route('jobs.show', $job)
             ->with('success', 'Job created successfully!');
     }
 
     /**
      * Show the form for editing the specified job.
      */
-    public function edit(string $id): View
+    public function edit(Job $job): View
     {
-        $job = Job::findOrFail($id);
         $employers = Employer::orderBy('name')->get();
 
         return view('jobs.edit', [
@@ -81,9 +80,8 @@ class JobController extends Controller
     /**
      * Update the specified job in storage.
      */
-    public function update(UpdateJobRequest $request, string $id): RedirectResponse
+    public function update(UpdateJobRequest $request, Job $job): RedirectResponse
     {
-        $job = Job::findOrFail($id);
         $validated = $request->validated();
 
         $job->update([
@@ -95,16 +93,15 @@ class JobController extends Controller
             ],
         ]);
 
-        return redirect()->route('jobs.show', $job->job_listing_id)
+        return redirect()->route('jobs.show', $job)
             ->with('success', 'Job updated successfully!');
     }
 
     /**
      * Remove the specified job from storage.
      */
-    public function destroy(string $id): RedirectResponse
+    public function destroy(Job $job): RedirectResponse
     {
-        $job = Job::findOrFail($id);
         $job->delete();
 
         return redirect()->route('jobs.index')
